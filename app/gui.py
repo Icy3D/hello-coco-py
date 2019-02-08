@@ -9,7 +9,7 @@ class Gui:
     self = None
 
     def __init__(self, model: Model):
-        self._slider_max = 1000
+        self._slider_max = 100
         self._model = model
         Gui.self = self
 
@@ -22,9 +22,9 @@ class Gui:
         self.create_trackbar('Detection thresh', 0.0, 1.0, self._model.obj_det_thresh, Gui.on_trackbar_obj_det_thresh)
         self.create_trackbar('Lense k1', -0.5, 0.5, dc.k1, Gui.on_trackbar_k1)
         self.create_trackbar('Lense k2', -0.02, 0.02, dc.k2, Gui.on_trackbar_k2)
+        self.create_trackbar('Lense k3', -0.002, 0.002, dc.k3, Gui.on_trackbar_k3)
         self.create_trackbar('Lense p1', -1.0, 1.0, dc.p1, Gui.on_trackbar_p1)
         self.create_trackbar('Lense p2', -1.0, 1.0, dc.p2, Gui.on_trackbar_p2)
-        self.create_trackbar('Lense k3', -0.002, 0.002, dc.k3, Gui.on_trackbar_k3)
 
     def create_trackbar(self, title, min_val, max_val, slider_val, callback):
         cv2.createTrackbar(title,
@@ -45,15 +45,17 @@ class Gui:
         slider_val = self._slider_max * perc
         return int(slider_val)
 
-    def render(self, img_output):
+    def show_image(self, img_output):
         cv2.imshow("Result - press space to toggle lens distortion", img_output)
+        return self.handle_keypress()
 
+    def handle_keypress(self):
         key = cv2.waitKey(1) & 0xFF
         if key == ord('q'):
             return False
         elif key == ord(' '):
             self._model.toggle_undistortion()
-            return True
+        return True
 
     # opencv can only deal with static callback methods, hence this static method
     @staticmethod
@@ -61,24 +63,34 @@ class Gui:
         Gui.self._model.obj_det_thresh = Gui.self.slider_to_value(0.0, 1.0, slider_val)
         print('thresh: ' + str(Gui.self._model.obj_det_thresh))
 
+    # opencv can only deal with static callback methods, hence this static method
+    @staticmethod
     def on_trackbar_k1(slider_val):
         Gui.self._model.camera.distortion_coefficients.k1 = Gui.self.slider_to_value(-0.5, 0.5, slider_val)
         print('k1: ' + str(Gui.self._model.camera.distortion_coefficients.k1))
 
+    # opencv can only deal with static callback methods, hence this static method
+    @staticmethod
     def on_trackbar_k2(slider_val):
         Gui.self._model.camera.distortion_coefficients.k2 = Gui.self.slider_to_value(-0.02, 0.02, slider_val)
         print('k2: ' + str(Gui.self._model.camera.distortion_coefficients.k2))
 
+    # opencv can only deal with static callback methods, hence this static method
+    @staticmethod
     def on_trackbar_k3(slider_val):
         # convert to -1.0 to 1.0
         Gui.self._model.camera.distortion_coefficients.k3 = Gui.self.slider_to_value(-0.002, 0.002, slider_val)
         print('k3: ' + str(Gui.self._model.camera.distortion_coefficients.k3))
 
+    # opencv can only deal with static callback methods, hence this static method
+    @staticmethod
     def on_trackbar_p1(slider_val):
         result = Gui.self.slider_to_value(-1.0, 1.0, slider_val)
         Gui.self._model.camera.distortion_coefficients.p1 = result
         print('p1: ' + str(result))
 
+    # opencv can only deal with static callback methods, hence this static method
+    @staticmethod
     def on_trackbar_p2(slider_val):
         # convert to -1.0 to 1.0
         Gui.self._model.camera.distortion_coefficients.p2 = Gui.self.slider_to_value(-1.0, 1.0, slider_val)

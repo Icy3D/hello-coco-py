@@ -1,13 +1,15 @@
 import cv2
-from camera import camera_matrix
-from camera import distortion_coefficients
+from camera.camera_matrix import CameraMatrix
+from camera.distortion_coefficients import DistortionCoefficients
 
 
 class Camera:
 
-    def __init__(self):
-        self._cm = camera_matrix.CameraMatrix()
-        self._dc = distortion_coefficients.DistortionCoefficients()
+    def __init__(self, width=1980, height=1080, fov_x=90.0, fov_y=50.625):
+        self._width = width
+        self._height = height
+        self._cm = CameraMatrix(self._width, self._height, fov_x, fov_y)
+        self._dc = DistortionCoefficients()
 
     def undistort(self, src, dst):
         cm = self._cm.matrix()
@@ -29,4 +31,12 @@ class Camera:
     @distortion_coefficients.setter
     def distortion_coefficients(self, value):
         pass
+
+    @property
+    def width(self):
+        return self._width
+
+    @property
+    def height(self):
+        return self._height
 

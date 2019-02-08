@@ -22,11 +22,16 @@ class ImageProcessing:
             return None
 
         img_rectified = img_input.copy()
+        cam = self._model.camera
 
         if self._model.is_undistortion_active:
-            self._model.camera.undistort(img_input, img_rectified)
+            cam.undistort(img_input, img_rectified)
 
-        self._img_output = cv2.resize(img_rectified, (1280, 720))
+        # rescaling - limiting video size to 720p
+        target_height = 720
+        target_width = int(target_height * (float(cam.width) / float(cam.height)))
+
+        self._img_output = cv2.resize(img_rectified, (target_width, target_height))
 
         self._rows = self._img_output.shape[0]
         self._cols = self._img_output.shape[1]
@@ -35,7 +40,7 @@ class ImageProcessing:
         tf_input = tf_input[:, :, [2, 1, 0]]  # BGR2RGB
         return tf_input
 
-    def detect(self, tf_result):
+    def render_detection(self, tf_result):
         # Visualize detected bounding boxes.
         num_detections = int(tf_result[0][0])
 

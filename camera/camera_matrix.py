@@ -4,12 +4,23 @@ import cv2
 
 class CameraMatrix:
 
-    def __init__(self):
-        self._fx = 0.0
-        self._fy = 0.0
-        self._cx = 0.0
-        self._cy = 0.0
-        self._rad_to_degree = np.pi / 180
+    rad_to_degree = _rad_to_degree = np.pi / 180
+
+    def __init__(self, width, height, fov_x, fov_y):
+        self._fx = CameraMatrix.fov_to_pixel(fov_x, width)
+        self._fy = CameraMatrix.fov_to_pixel(fov_y, height)
+        self._cx = width / 2.0
+        self._cy = height / 2.0
+
+    # ATTENTION fov_y and fy are different values
+    # see alphay here
+    # https://github.com/opencv/opencv/blob/2.4/modules/calib3d/src/calibration.cpp#L1778
+    @staticmethod
+    def fov_to_pixel(fov, resolution):
+        angle = CameraMatrix.rad_to_degree * fov / 2
+        divisor = 2 * np.tan(angle)
+        f_pixel = resolution / divisor
+        return f_pixel
 
     def matrix(self):
         result = np.array([[self._fx, 0, self._cx],
@@ -25,14 +36,7 @@ class CameraMatrix:
     def fx(self, value):
         self._fx = value
 
-    # ATTENTION fov_x and fx are different values
-    # see alphax here
-    # https://github.com/opencv/opencv/blob/2.4/modules/calib3d/src/calibration.cpp#L1778
-    def fx_from_fov(self, fov_x, width):
-        # fov_x = 2 * np.arctan(width / (2 * self._fx))
-        angle = self._rad_to_degree * fov_x / 2
-        divisor = 2 * np.tan(angle)
-        self._fx = width / divisor
+
 
     @property
     def fy(self):
@@ -41,14 +45,6 @@ class CameraMatrix:
     @fy.setter
     def fy(self, value):
         self._fy = value
-
-    # ATTENTION fov_y and fy are different values
-    # see alphay here
-    # https://github.com/opencv/opencv/blob/2.4/modules/calib3d/src/calibration.cpp#L1778
-    def fy_from_fov(self, fov_y, height):
-        angle = self._rad_to_degree * fov_y / 2
-        divisor = 2 * np.tan(angle)
-        self._fy = height / divisor
 
     def fov_y(self, value, height):
         # https://stackoverflow.com/questions/39992968/how-to-calculate-field-of-view-of-the-camera-from-camera-intrinsic-matrix

@@ -1,4 +1,4 @@
-from camera.GoProHero4Silver import GoProHero4Silver
+from camera.gopro_hero4_silver import GoProHero4Silver
 from app.tools import Tools
 from camera.camera import Camera
 import tensorflow as tf

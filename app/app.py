@@ -37,20 +37,23 @@ class App:
     def loop(self):
         while True:
 
+            # read the next camera frame
             img_input = self._ip.get_next_frame()
             if img_input is None:
                 break
 
+            # setup tensorflow parameters
             num = self._tf_session.graph.get_tensor_by_name('num_detections:0')
             scores = self._tf_session.graph.get_tensor_by_name('detection_scores:0')
             boxes = self._tf_session.graph.get_tensor_by_name('detection_boxes:0')
             classes = self._tf_session.graph.get_tensor_by_name('detection_classes:0')
             feed_dict = {'image_tensor:0': img_input.reshape(1, img_input.shape[0], img_input.shape[1], 3)}
-            # Run the model
-
+            # Run the tensorflow/coco model
             tf_result = self._tf_session.run([num, scores, boxes, classes], feed_dict)
-            img_output = self._ip.detect(tf_result)
-            cancel = not self._gui.render(img_output)
+
+            # draw the tf results into the output image and display it
+            img_output = self._ip.render_detection(tf_result)
+            cancel = not self._gui.show_image(img_output)
 
             if cancel:
                 break
