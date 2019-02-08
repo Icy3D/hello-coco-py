@@ -2,7 +2,7 @@
 A simple python application using opencv, tensorflow and coco models to show some basic object detection.
 
 ## Ide
-This is a PyCharm project. Just launch the IDE an open the respective folder
+This is a PyCharm project. Just launch the IDE and open the root folder of this project.
 
 ## Pre-Requisites
 This project was developed on win 10 but I don't see any reason why it wouldn't run on other OS. 
