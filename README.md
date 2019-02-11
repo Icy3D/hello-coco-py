@@ -7,9 +7,11 @@ This is a PyCharm project. Just launch the IDE and open the root folder of this 
 ## Pre-Requisites
 This project was developed on win 10 but I don't see any reason why it wouldn't run on other OS. 
 You need to have installed:
-- Cuda 9 with respective cuDNN version
+- CUDA 9 or 10 with respective cuDNN version
 
 ## Compatible Versions
 The project runs successfully with the following packages
-- tensorflow-gpu 1.12
+- tensorflow-gpu
+    - tensorflow-gpu 1.12 &rarr; requires CUDA 9.x
+    - tensorflow-gpu 1.13+ &rarr; requires CUDA 10.x
 - opencv-python 4.0.0.21
