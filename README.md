@@ -1,5 +1,8 @@
 # hello-coco-py
-A simple python application using opencv, tensorflow and coco models to show some basic object detection.
+A simple python application using opencv, tensorflow and coco models to show some basic object detection on video 
+streams.
+
+![Coco models detected within video streams](README.jpg "Coco models detected within video streams")
 
 ## Ide
 This is a PyCharm project. Just launch the IDE and open the root folder of this project.
