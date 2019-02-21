@@ -5,7 +5,7 @@ manually or via predefined parameters.
 
 ![Coco models detected within video streams](README.jpg "Coco models detected within video streams")
 
-## Ide
+## IDE
 This is a PyCharm project. Just launch the IDE and open the root folder of this project.
 
 ## Pre-Requisites
