@@ -1,6 +1,7 @@
 # hello-coco-py
 A simple python application using opencv, tensorflow and coco models to show some basic object detection on video 
-streams.
+streams. The application also lets you remove the camera distortion by adjusting the camera parameters - 
+manually or via predefined parameters.
 
 ![Coco models detected within video streams](README.jpg "Coco models detected within video streams")
 
