@@ -22,10 +22,11 @@ class RenderTools:
 
         txt_size = cv2.getTextSize(text, font_face, scale, thickness)
 
-        end_x = position[0] + txt_size[0][0] + margin
-        end_y = position[1] + txt_size[0][1] + margin
+        bg_end_x = position[0] + txt_size[0][0] + margin
+        bg_end_y = position[1] + txt_size[0][1] + margin
+        bg_end_pos = (bg_end_x, bg_end_y)
 
-        text_pos = (position[0], position[1] + txt_size[0][1])
+        text_start_pos = (position[0], position[1] + txt_size[0][1])
 
-        cv2.rectangle(img, position, (end_x, end_y), bg_color, thickness)
-        cv2.putText(img, text, text_pos, font_face, scale, color, 1, cv2.LINE_AA)
+        cv2.rectangle(img, position, bg_end_pos, bg_color, thickness)
+        cv2.putText(img, text, text_start_pos, font_face, scale, color, 1, cv2.LINE_AA)
